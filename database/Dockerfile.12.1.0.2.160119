@@ -1,0 +1,42 @@
+################################################################################
+# Dockerfile.12.1.0.2.160119
+#
+# Copyright (C) 2016 Justin Paul <justinpaulthekkan@gmail.com>
+#
+# @author: Justin Paul
+#
+# This program is free software: you can redistribute it and/or modify
+# it as long as you retain the name of the original author and under
+# the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+FROM oraclelinux:7
+MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
+
+ENV SCRATCH=/tmp/scratch ORACLE_GROUP=oinstall ORACLE_USER=oracle ORACLE_BASE=/u01/app/oracle ORACLE_HOME=/u01/app/oracle/product/12.1.0/dbhome_1 ORACLE_GDN=orcl.justinpaul.com ORACLE_SID=orcl
+
+CMD /bin/bash
+
+COPY linuxamd64_12102_database_1of2.zip linuxamd64_12102_database_2of2.zip p6880880_121010_Linux-x86-64.zip p21948354_121020_Linux-x86-64.zip p22139226_121020_Linux-x86-64.zip ${SCRATCH}/
+
+RUN	yum update -y -q && \
+	yum install -y -q binutils compat-libcap1 gcc gcc-c++ git glibc glibc-devel \
+	glibc-devel.i686 glibc.i686 ksh libaio-devel libaio-devel.i686 \
+	libaio.i686 libaio.x86_64 libgcc libgcc.i686 libstdc++ libstdc++-devel \
+	libstdc++-devel.i686 libstdc++.i686 libX11 libX11.i686 libXi libXi.i686 \
+	libXtst libXtst.i686 make psmisc python sysstat unzip && \
+	groupadd -g 1000 ${ORACLE_GROUP} && useradd -u 1000 -g 1000 -m ${ORACLE_USER} && \
+	mkdir -p ${ORACLE_BASE} && chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${SCRATCH} && \
+	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_BASE} && \
+	su - -c "git clone https://github.com/justinpaulthekkan/oracle-db-tooling.git ~/scripts" ${ORACLE_USER} && \
+	su - -c "/usr/bin/python ~/scripts/main.py -ip -l ${SCRATCH} -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER} && \
+	rm -rf ${SCRATCH}

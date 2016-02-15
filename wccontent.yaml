@@ -1,0 +1,50 @@
+################################################################################
+# wccontent.yaml
+#
+# Copyright (C) 2016 Justin Paul <justinpaulthekkan@gmail.com>
+#
+# @author: Justin Paul
+#
+# This program is free software: you can redistribute it and/or modify
+# it as long as you retain the name of the original author and under
+# the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+version: "2.0"
+services:
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile.12.1.0.2.160119
+    image: oracledb
+    ports:
+      - "1521:1521"
+    command: su - -c "/usr/bin/python ~/scripts/main.py -c --start -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER}
+    links:
+      - admin
+
+  admin:
+
+  ucm:
+    build:
+      context: ./wccontent
+      dockerfile: Dockerfile.12.2.1.0.0
+    image: wccontent
+    ports:
+      - "7001:7001"
+      - "7002:7002"
+    command: su - -c " main.py ucm"
+
+  ibr:
+    image: wccontent
+    ports: 16250:16250
+    command: su - -c "main.py ibr"
