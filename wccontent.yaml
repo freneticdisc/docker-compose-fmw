@@ -22,9 +22,6 @@
 version: "2.0"
 services:
   db:
-    build:
-      context: ./database
-      dockerfile: Dockerfile.12.1.0.2.160119
     image: oracledb
     ports:
       - "1521:1521"
@@ -33,8 +30,6 @@ services:
       - admin
 
   admin:
-
-  ucm:
     build:
       context: ./wccontent
       dockerfile: Dockerfile.12.2.1.0.0
@@ -43,8 +38,3 @@ services:
       - "7001:7001"
       - "7002:7002"
     command: su - -c " main.py ucm"
-
-  ibr:
-    image: wccontent
-    ports: 16250:16250
-    command: su - -c "main.py ibr"
