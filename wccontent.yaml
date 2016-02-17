@@ -21,20 +21,74 @@
 ################################################################################
 version: "2.0"
 services:
-  db:
+  database:
     image: oracledb
+    hostname: database
+    environment:
+      - ORACLE_BASE=/u01/app/oracle
+      - ORACLE_HOME=${ORACLE_BASE}/product/12.1.0/dbhome_1
+      - ORACLE_GDN=orcl.justinpaul.com
+      - ORACLE_SID=orcl
+      - ORACLE_USER=oracle
     ports:
       - "1521:1521"
     command: su - -c "/usr/bin/python ~/scripts/main.py -c --start -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER}
-    links:
-      - admin
 
-  admin:
-    build:
-      context: ./wccontent
-      dockerfile: Dockerfile.12.2.1.0.0
+  adminserver:
     image: wccontent
+    hostname: adminserver
+    tty: true
     ports:
       - "7001:7001"
       - "7002:7002"
-    command: su - -c " main.py ucm"
+    links:
+      - database
+    command: /bin/sh
+
+  contentserver:
+    image: wccontent
+    hostname: contentserver
+    tty: true
+    ports:
+      - "16200:16200"
+      - "17200:17200"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  inboundrefinery:
+    image: wccontent
+    hostname: inboundrefinery
+    tty: true
+    ports:
+      - "16250:16250"
+      - "17250:17250"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  webui:
+    image: wccontent
+    hostname: webui
+    tty: true
+    ports:
+      - "16225:16225"
+      - "17225:17225"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  capture:
+    image: wccontent
+    hostname: capture
+    tty: true
+    ports:
+      - "16400:16400"
+      - "17400:17400"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
