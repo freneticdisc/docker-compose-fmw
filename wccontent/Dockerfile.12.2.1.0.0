@@ -22,7 +22,7 @@
 FROM oraclelinux:7
 MAINTAINER Justin Paul <justinpaulthekkan@gmail.com>
 
-ENV SCRATCH=/tmp/scratch ORACLE_GROUP=oinstall ORACLE_USER=oracle ORACLE_HOME=/u01/app/oracle JDK_HOME=/u01/app/oracle/jdk MW_HOME=/u01/app/oracle/middleware DOMAIN_HOME=/u01/data/domains
+ENV SCRATCH=/tmp/scratch ORACLE_GROUP=oinstall ORACLE_USER=oracle ORACLE_HOME=/u01/app/oracle JDK_HOME=/u01/app/oracle/jdk MW_HOME=/u01/app/oracle/middleware DOMAIN_HOME=/u01/data
 
 CMD /bin/bash
 
@@ -36,7 +36,8 @@ RUN	yum update -y -q && \
 	ocfs2-tools sysstat unzip && \
 	groupadd -g 1000 ${ORACLE_GROUP} && useradd -u 1000 -g 1000 -m ${ORACLE_USER} && \
 	mkdir -p ${ORACLE_HOME} && chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${SCRATCH} && \
-	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_HOME} && \
+	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_HOME} && mkdir -p ${DOMAIN_HOME} && \
+	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${DOMAIN_HOME} && \
 	su - -c "git clone https://github.com/justinpaulthekkan/oracle-fmw-tooling.git ~/scripts" ${ORACLE_USER} && \
 	su - -c "/usr/bin/python ~/scripts/main.py -ip -l ${SCRATCH} -o ${ORACLE_HOME} -j ${JDK_HOME} -f ${MW_HOME} wls wcc" ${ORACLE_USER} && \
 	rm -rf ${SCRATCH}
