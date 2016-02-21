@@ -14,8 +14,8 @@ The following files must be downloaded and made available in this directory. The
 
 There is no need to extract the archives as the scripts will take care of that.
 
-[jdk]: http://download.oracle.com/otn-pub/java/jdk/8u74-b02/jdk-8u74-linux-x64.tar.gz "Oracle Java SE Development Kit 8"
-[weblogic]: http://download.oracle.com/otn/nt/middleware/12c/1221/fmw_12.2.1.0.0_infrastructure_Disk1_1of1.zip "Oracle WebLogic Server 12c"
-[wccontent]: http://download.oracle.com/otn/nt/middleware/12c/1221/fmw_12.2.1.0.0_wccontent_Disk1_1of1.zip "Oracle WebCenter Content 12c"
+[jdk]: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html "Oracle Java SE Development Kit 8"
+[weblogic]: http://www.oracle.com/technetwork/middleware/weblogic/downloads/index.html "Oracle WebLogic Server 12c"
+[wccontent]: http://www.oracle.com/technetwork/middleware/webcenter/content/downloads/index.html "Oracle WebCenter Content 12c"
 [p22331568]: https://support.oracle.com/epmos/faces/PatchDetail?patchId=22331568 "Oracle WebLogic Server 12c Patch 22331568"
 [p22541322]: https://support.oracle.com/epmos/faces/PatchDetail?patchId=22541322 "Oracle WebLogic Server 12c Patch 22541322"

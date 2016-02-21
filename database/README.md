@@ -14,8 +14,8 @@ The following files must be downloaded and made available in this directory. The
 
 There is no need to extract the archives as the scripts will take care of that. Generally a combo patch is available that contains one or more patches. We do not use the combo patch as it adds more complexity.
 
-[oradbdisk1]: http://download.oracle.com/otn/linux/oracle12c/121020/linuxamd64_12102_database_1of2.zip "Oracle Database 12c Disk 1"
-[oradbdisk2]: http://download.oracle.com/otn/linux/oracle12c/121020/linuxamd64_12102_database_2of2.zip "Oracle Database 12c Disk 2"
+[oradbdisk1]: http://www.oracle.com/technetwork/database/enterprise-edition/downloads/database12c-linux-download-2240591.html "Oracle Database 12c Disk 1"
+[oradbdisk2]: http://www.oracle.com/technetwork/database/enterprise-edition/downloads/database12c-linux-download-2240591.html "Oracle Database 12c Disk 2"
 [opatch]: https://support.oracle.com/epmos/faces/PatchResultsNDetails?patchId=6880880 "Latest OPatch"
 [p21948354]: https://support.oracle.com/epmos/faces/PatchResultsNDetails?patchId=21948354 "Oracle Database 12c Patch 21948354"
 [p22139226]: https://support.oracle.com/epmos/faces/PatchResultsNDetails?patchId=22139226 "Oracle Database 12c Patch 22139226"
