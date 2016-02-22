@@ -37,6 +37,6 @@ RUN	yum update -y -q && \
 	groupadd -g 1000 ${ORACLE_GROUP} && useradd -u 1000 -g 1000 -m ${ORACLE_USER} && \
 	mkdir -p ${ORACLE_BASE} && chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${SCRATCH} && \
 	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_BASE} && \
-	su - -c "git clone https://github.com/justinpaulthekkan/oracle-db-tooling.git ~/scripts" ${ORACLE_USER} && \
+	su - -c "git clone --branch v1.0.0 https://github.com/justinpaulthekkan/oracle-db-tooling.git ~/scripts" ${ORACLE_USER} && \
 	su - -c "/usr/bin/python ~/scripts/main.py -ip -l ${SCRATCH} -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER} && \
 	rm -rf ${SCRATCH}
