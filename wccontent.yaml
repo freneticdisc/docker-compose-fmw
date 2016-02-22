@@ -1,0 +1,96 @@
+################################################################################
+# wccontent.yaml
+#
+# Copyright (C) 2016 Justin Paul <justinpaulthekkan@gmail.com>
+#
+# @author: Justin Paul
+#
+# This program is free software: you can redistribute it and/or modify
+# it as long as you retain the name of the original author and under
+# the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+version: "2.0"
+services:
+  database:
+    image: oracledb
+    hostname: database
+    ports:
+      - "1521:1521"
+    user: oracle
+    command: su - -c "/usr/bin/python ~/scripts/main.py -c --start -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER}
+    depends_on:
+      - aaa
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    shm_size: 1g
+  adminserver:
+    image: wccontent
+    hostname: adminserver
+    tty: true
+    ports:
+      - "7001:7001"
+      - "7002:7002"
+    links:
+      - database
+    command: /bin/sh
+
+  contentserver:
+    image: wccontent
+    hostname: contentserver
+    tty: true
+    ports:
+      - "16200:16200"
+      - "17200:17200"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  inboundrefinery:
+    image: wccontent
+    hostname: inboundrefinery
+    tty: true
+    ports:
+      - "16250:16250"
+      - "17250:17250"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  webui:
+    image: wccontent
+    hostname: webui
+    tty: true
+    ports:
+      - "16225:16225"
+      - "17225:17225"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
+
+  capture:
+    image: wccontent
+    hostname: capture
+    tty: true
+    ports:
+      - "16400:16400"
+      - "17400:17400"
+    links:
+      - database
+      - adminserver
+    command: /bin/sh
