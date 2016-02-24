@@ -44,7 +44,7 @@ services:
       - database
     depends_on:
       - database
-    command: /bin/bash -c "sleep 10m; /usr/bin/python ~/scripts/main.py --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr; /u01/data/mydomain/bin/startWebLogic.sh"
+    command: /bin/bash -c "sleep 15m; /usr/bin/python ~/scripts/main.py --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr; /u01/data/mydomain/bin/startWebLogic.sh"
 
   contentserver:
     image: wccontent
@@ -59,9 +59,8 @@ services:
       - database
       - adminserver
     depends_on:
-      - database
       - adminserver
-    command: /bin/bash -c "sleep 20m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm; /u01/data/mydomain/bin/startNodeManager.sh"
+    command: /bin/bash -c "sleep 30m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm; /u01/data/mydomain/bin/startNodeManager.sh"
 
   inboundrefinery:
     image: wccontent
@@ -76,9 +75,8 @@ services:
       - database
       - adminserver
     depends_on:
-      - database
-      - adminserver
-    command: /bin/bash -c "sleep 22m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ibr; /u01/data/mydomain/bin/startNodeManager.sh"
+      - contentserver
+    command: /bin/bash -c "sleep 32m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ibr; /u01/data/mydomain/bin/startNodeManager.sh"
 
   webui:
     image: wccontent
@@ -93,9 +91,8 @@ services:
       - database
       - adminserver
     depends_on:
-      - database
-      - adminserver
-    command: /bin/bash -c "sleep 24m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain wccadf; /u01/data/mydomain/bin/startNodeManager.sh"
+      - inboundrefinery
+    command: /bin/bash -c "sleep 34m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain wccadf; /u01/data/mydomain/bin/startNodeManager.sh"
 
   capture:
     image: wccontent
@@ -110,6 +107,5 @@ services:
       - database
       - adminserver
     depends_on:
-      - database
-      - adminserver
-    command: /bin/bash -c "sleep 26m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain capture; /u01/data/mydomain/bin/startNodeManager.sh"
+      - webui
+    command: /bin/bash -c "sleep 36m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain capture; /u01/data/mydomain/bin/startNodeManager.sh"
