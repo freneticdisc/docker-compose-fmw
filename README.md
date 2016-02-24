@@ -1,27 +1,22 @@
 ## Rapidly provision Oracle Fusion Middleware 12c Services
-Project to rapidly provision an Oracle Fusion Middleware service using Docker Compose.
+Project to rapidly provision an Oracle Fusion Middleware environment using Docker Compose.
 
 ### Pre-requisites
-`docker build --shm-size=2g --force-rm --rm=true --no-cache -t oracledb -f database/Dockerfile.12.1.0.2.160119 database`
+Docker Engine version 1.10.1, build 9e83765
+Docker Compose version 1.7.0dev, build d551496
 
-`docker build --shm-size=2g --force-rm --rm=true --no-cache -t wccontent -f wccontent/Dockerfile.12.2.1.0.0 wccontent`
+### Usage
+To build your base images, use the following commands:
 
-`docker run -i -P --name=db --shm-size=1g -t database`
+Oracle Database 12c: `docker build --shm-size=2g --force-rm --rm=true --no-cache -t oracledb -f ~/build/database/Dockerfile.12.1.0.2.160119 ~/build/database`
 
-`docker run -i -P --name=ucm --shm-size=1g -t wccontent`
+Oracle WebCenter Content 12c: `docker build --shm-size=2g --force-rm --rm=true --no-cache -t wccontent -f ~/build/wccontent/Dockerfile.12.2.1.0.0 ~/build/wccontent`
 
-`docker run -i -P --name=ibr --shm-size=1g -t wccontent`
+To create an environment.
 
-`/usr/bin/python create_schemas.py -f /u01/app/oracle/middleware -c 172.17.0.2:1521:orcl -m DEV1 em ucm capture wccadf`
+Oracle WebCenter Content 12c: `docker-compose -p demo1 -f ~/build/wccontent.yaml -d up`
 
-`/usr/bin/python drop_schemas.py -f /u01/app/oracle/middleware -c 172.17.0.2:1521:orcl -m DEV1 --all`
+To delete the environment:
 
-`/u01/app/oracle/middleware/oracle_common/common/bin/wlst.sh create_domain_off.py -f /u01/app/oracle/middleware -h /tmp/mydomain1 -c 172.17.0.2:1521:orcl -m DEV1 --db_password welcome1 --nm_password welcome1 --as_password welcome1 ucm capture wccadf ibr`
+Oracle WebCenter Content 12c: `docker-compose -p demo1 -f ~/build/wccontent.yaml -d rm`
 
-`/u01/app/oracle/middleware/oracle_common/common/bin/wlst.sh add_servers_onl.py -a 172.17.0.3 -h /tmp/mydomain1 --use_plain --as_password welcome1 ucm`
-
-`/u01/app/oracle/middleware/oracle_common/common/bin/wlst.sh add_servers_onl.py -a 172.17.0.3 -h /tmp/mydomain1 --use_plain --as_password welcome1 ibr`
-
---add-host host:ip
--h hostname
---hostname hostname

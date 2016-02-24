@@ -23,33 +23,34 @@ version: "2.0"
 services:
   database:
     image: oracledb
+    shm_size: 1g
     hostname: database
+    user: oracle
+    tty: true
     ports:
       - "1521:1521"
-    user: oracle
-    command: su - -c "/usr/bin/python ~/scripts/main.py -c --start -o ${ORACLE_BASE} -h ${ORACLE_HOME} -n ${ORACLE_GDN} --sid ${ORACLE_SID}" ${ORACLE_USER}
-    depends_on:
-      - aaa
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 20000
-        hard: 40000
-    shm_size: 1g
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py -c --start -o /u01/app/oracle -n orcl.justinpaul.com --sid orcl; /bin/bash"
+
   adminserver:
     image: wccontent
+    shm_size: 1g
     hostname: adminserver
+    user: oracle
     tty: true
     ports:
       - "7001:7001"
       - "7002:7002"
     links:
       - database
-    command: /bin/sh
+    depends_on:
+      - database
+    command: /bin/bash -c "sleep 10m; /usr/bin/python ~/scripts/main.py --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr; /u01/data/mydomain/bin/startWebLogic.sh"
 
   contentserver:
     image: wccontent
+    shm_size: 1g
     hostname: contentserver
+    user: oracle
     tty: true
     ports:
       - "16200:16200"
@@ -57,11 +58,16 @@ services:
     links:
       - database
       - adminserver
-    command: /bin/sh
+    depends_on:
+      - database
+      - adminserver
+    command: /bin/bash -c "sleep 20m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm; /u01/data/mydomain/bin/startNodeManager.sh"
 
   inboundrefinery:
     image: wccontent
+    shm_size: 1g
     hostname: inboundrefinery
+    user: oracle
     tty: true
     ports:
       - "16250:16250"
@@ -69,11 +75,16 @@ services:
     links:
       - database
       - adminserver
-    command: /bin/sh
+    depends_on:
+      - database
+      - adminserver
+    command: /bin/bash -c "sleep 22m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ibr; /u01/data/mydomain/bin/startNodeManager.sh"
 
   webui:
     image: wccontent
+    shm_size: 1g
     hostname: webui
+    user: oracle
     tty: true
     ports:
       - "16225:16225"
@@ -81,11 +92,16 @@ services:
     links:
       - database
       - adminserver
-    command: /bin/sh
+    depends_on:
+      - database
+      - adminserver
+    command: /bin/bash -c "sleep 24m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain wccadf; /u01/data/mydomain/bin/startNodeManager.sh"
 
   capture:
     image: wccontent
+    shm_size: 1g
     hostname: capture
+    user: oracle
     tty: true
     ports:
       - "16400:16400"
@@ -93,4 +109,7 @@ services:
     links:
       - database
       - adminserver
-    command: /bin/sh
+    depends_on:
+      - database
+      - adminserver
+    command: /bin/bash -c "sleep 26m; /usr/bin/python ~/scripts/main.py --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain capture; /u01/data/mydomain/bin/startNodeManager.sh"
