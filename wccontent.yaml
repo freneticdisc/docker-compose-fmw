@@ -46,7 +46,7 @@ services:
       - database
     depends_on:
       - database
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr && /u01/data/mydomain/bin/startWebLogic.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --wait_time 300 --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr && /u01/data/mydomain/bin/startWebLogic.sh"
 
   contentserver:
     image: wccontent
