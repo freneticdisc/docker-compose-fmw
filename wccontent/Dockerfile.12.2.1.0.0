@@ -38,6 +38,6 @@ RUN	yum update -y -q && \
 	mkdir -p ${ORACLE_HOME} && chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${SCRATCH} && \
 	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_HOME} && mkdir -p ${DOMAIN_HOME} && \
 	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${DOMAIN_HOME} && \
-	su - -c "git clone --branch v1.0.0 https://github.com/justinpaulthekkan/oracle-fmw-tooling.git ~/scripts" ${ORACLE_USER} && \
+	su - -c "git clone https://github.com/justinpaulthekkan/oracle-fmw-tooling.git ~/scripts" ${ORACLE_USER} && \
 	su - -c "/usr/bin/python ~/scripts/main.py -ip -l ${SCRATCH} -o ${ORACLE_HOME} -j ${JDK_HOME} -f ${MW_HOME} wls wcc" ${ORACLE_USER} && \
 	rm -rf ${SCRATCH}
