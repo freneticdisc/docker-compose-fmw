@@ -35,7 +35,7 @@ services:
   adminserver:
     image: wccontent
     shm_size: 1g
-    mem_limit: 2g
+    mem_limit: 1g
     hostname: adminserver
     user: oracle
     tty: true
@@ -51,8 +51,7 @@ services:
   contentserver:
     image: wccontent
     shm_size: 1g
-    mem_limit: 2g
-    hostname: contentserver
+    mem_limit: 1g
     user: oracle
     tty: true
     ports:
@@ -68,8 +67,7 @@ services:
   inboundrefinery:
     image: wccontent
     shm_size: 1g
-    mem_limit: 2g
-    hostname: inboundrefinery
+    mem_limit: 1g
     user: oracle
     tty: true
     ports:
@@ -85,8 +83,7 @@ services:
   webui:
     image: wccontent
     shm_size: 1g
-    mem_limit: 2g
-    hostname: webui
+    mem_limit: 1g
     user: oracle
     tty: true
     ports:
@@ -102,8 +99,7 @@ services:
   capture:
     image: wccontent
     shm_size: 1g
-    mem_limit: 2g
-    hostname: capture
+    mem_limit: 1g
     user: oracle
     tty: true
     ports:
