@@ -8,9 +8,9 @@ Docker Compose version 1.7.0dev, build d551496
 ### Usage
 To build your base images, use the following commands:
 
-Oracle Database 12c: `docker build --shm-size=2g --force-rm --rm=true --no-cache -t oracledb -f ~/build/database/Dockerfile.12.1.0.2.160119 ~/build/database`
+Oracle Database 12c: `docker build --shm-size=1g --force-rm --rm=true --no-cache -t oracledb -f ~/build/database/Dockerfile.12.1.0.2.160119 ~/build/database`
 
-Oracle WebCenter Content 12c: `docker build --shm-size=2g --force-rm --rm=true --no-cache -t wccontent -f ~/build/wccontent/Dockerfile.12.2.1.0.0 ~/build/wccontent`
+Oracle WebCenter Content 12c: `docker build --shm-size=1g --force-rm --rm=true --no-cache -t wccontent -f ~/build/wccontent/Dockerfile.12.2.1.0.0 ~/build/wccontent`
 
 To create an environment.
 
