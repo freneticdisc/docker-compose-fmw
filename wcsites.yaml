@@ -1,0 +1,47 @@
+################################################################################
+# wccontent.yaml
+#
+# Copyright (C) 2016 Justin Paul <justinpaulthekkan@gmail.com>
+#
+# @author: Justin Paul
+#
+# This program is free software: you can redistribute it and/or modify
+# it as long as you retain the name of the original author and under
+# the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+version: "2.0"
+services:
+  database:
+    image: oracledb
+    shm_size: 1g
+    hostname: database
+    user: oracle
+    tty: true
+    ports:
+      - "1521:1521"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py -c --start -o /u01/app/oracle -n orcl.justinpaul.com --sid orcl; /bin/bash"
+
+  adminserver:
+    image: wcportal
+    shm_size: 1g
+    hostname: adminserver
+    user: oracle
+    tty: true
+    ports:
+      - "7001:7001"
+      - "7002:7002"
+    links:
+      - database
+    depends_on:
+      - database
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --wait_time 600 --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 wls && /u01/data/mydomain/bin/startWebLogic.sh; /bin/bash"

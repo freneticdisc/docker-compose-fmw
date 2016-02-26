@@ -1,5 +1,5 @@
 ################################################################################
-# Dockerfile.wccontent.12.2.1.0.0
+# Dockerfile.wcportal.12.2.1.0.0
 #
 # Copyright (C) 2016 Justin Paul <justinpaulthekkan@gmail.com>
 #
@@ -26,7 +26,7 @@ ENV SCRATCH=/tmp/scratch ORACLE_GROUP=oinstall ORACLE_USER=oracle ORACLE_HOME=/u
 
 CMD /bin/bash
 
-COPY jdk-8u74-linux-x64.tar.gz fmw_12.2.1.0.0_infrastructure_Disk1_1of1.zip fmw_12.2.1.0.0_wccontent_Disk1_1of1.zip p22331568_122100_Generic.zip p22541322_122100_Generic.zip ${SCRATCH}/
+COPY jdk-8u74-linux-x64.tar.gz fmw_12.2.1.0.0_infrastructure_Disk1_1of1.zip fmw_12.2.1.0.0_wcportal_Disk1_1of1.zip p22331568_122100_Generic.zip p22541322_122100_Generic.zip ${SCRATCH}/
 
 RUN	yum update -y -q && \
 	yum install -y -q compat-libcap1 compat-libstdc++-33 \
@@ -38,7 +38,7 @@ RUN	yum update -y -q && \
 	mkdir -p ${ORACLE_HOME} && chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${SCRATCH} && \
 	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${ORACLE_HOME} && mkdir -p ${DOMAIN_HOME} && \
 	chown -R ${ORACLE_USER}:${ORACLE_GROUP} ${DOMAIN_HOME} && \
-	su - -c "git clone https://github.com/justinpaulthekkan/oracle-fmw-tooling.git ~/scripts" ${ORACLE_USER} && \
-	su - -c "/usr/bin/python ~/scripts/main.py -i -l ${SCRATCH} -o ${ORACLE_HOME} -j ${JDK_HOME} -f ${MW_HOME} wls wcc" ${ORACLE_USER} && \
+	su - -c "git clone --branch v1.0.1 https://github.com/justinpaulthekkan/oracle-fmw-tooling.git ~/scripts" ${ORACLE_USER} && \
+	su - -c "/usr/bin/python ~/scripts/main.py -i -l ${SCRATCH} -o ${ORACLE_HOME} -j ${JDK_HOME} -f ${MW_HOME} wls wcp" ${ORACLE_USER} && \
 	su - -c "/usr/bin/python ~/scripts/main.py -p -l ${SCRATCH} -o ${ORACLE_HOME} -j ${JDK_HOME} -f ${MW_HOME} wls" ${ORACLE_USER} && \
 	rm -rf ${SCRATCH}
