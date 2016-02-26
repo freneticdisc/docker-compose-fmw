@@ -44,7 +44,7 @@ services:
       - database
     depends_on:
       - database
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --wait_time 600 --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr && /u01/data/mydomain/bin/startWebLogic.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --wait_time 600 --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 ucm capture wccadf ibr && /u01/data/mydomain/bin/startWebLogic.sh; /bin/bash"
 
   contentserver:
     image: wccontent
@@ -59,7 +59,7 @@ services:
       - adminserver
     depends_on:
       - adminserver
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm && /u01/data/mydomain/bin/startNodeManager.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
 
   inboundrefinery:
     image: wccontent
@@ -74,7 +74,7 @@ services:
       - adminserver
     depends_on:
       - contentserver
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ibr && /u01/data/mydomain/bin/startNodeManager.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ibr && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
 
   webui:
     image: wccontent
@@ -89,7 +89,7 @@ services:
       - adminserver
     depends_on:
       - inboundrefinery
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain wccadf && /u01/data/mydomain/bin/startNodeManager.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain wccadf && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
 
   capture:
     image: wccontent
@@ -104,4 +104,4 @@ services:
       - adminserver
     depends_on:
       - webui
-    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain capture && /u01/data/mydomain/bin/startNodeManager.sh"
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain capture && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
