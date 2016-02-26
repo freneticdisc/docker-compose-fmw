@@ -13,15 +13,14 @@ cd ~
 git clone https://github.com/justinpaulthekkan/docker-compose-fmw.git ~/build
 
 docker build --shm-size=1g --force-rm --rm=true --no-cache -t oracledb -f ~/build/database/Dockerfile.12.1.0.2.160119 ~/build/database
-
 docker build --shm-size=1g --force-rm --rm=true --no-cache -t wccontent -f ~/build/wccontent/Dockerfile.12.2.1.0.0 ~/build/wccontent
 ```
 
-To create an environment.
+Oracle WebCenter Content 12c:
+```
+# Create and start the containers
+docker-compose -p demo1 -f ~/build/wccontent.yaml -d up
 
-Oracle WebCenter Content 12c: `docker-compose -p demo1 -f ~/build/wccontent.yaml -d up`
-
-To delete the environment:
-
-Oracle WebCenter Content 12c: `docker-compose -p demo1 -f ~/build/wccontent.yaml -d rm`
-
+# Remove the stopped containers
+docker-compose -p demo1 -f ~/build/wccontent.yaml -d rm
+```
