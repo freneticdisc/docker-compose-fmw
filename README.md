@@ -2,9 +2,10 @@
 Project to rapidly provision an Oracle Fusion Middleware environment using Docker Compose.
 
 ### Pre-requisites
+```
 Docker Engine version 1.10.1, build 9e83765
-
 Docker Compose version 1.7.0dev, build d551496
+```
 
 ### Usage
 To build your base images, use the following commands:
