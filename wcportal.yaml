@@ -45,3 +45,48 @@ services:
     depends_on:
       - database
     command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --wait_time 600 --create_domain -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -c database:1521:orcl -m DEV1 wls && /u01/data/mydomain/bin/startWebLogic.sh; /bin/bash"
+
+  portal:
+    image: wcportal
+    shm_size: 1g
+    user: oracle
+    tty: true
+    ports:
+      - "8888:8888"
+      - "17200:17200"
+    links:
+      - database
+      - adminserver
+    depends_on:
+      - adminserver
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
+
+  collaboration:
+    image: wcportal
+    shm_size: 1g
+    user: oracle
+    tty: true
+    ports:
+      - "8890:8890"
+      - "17200:17200"
+    links:
+      - database
+      - adminserver
+    depends_on:
+      - adminserver
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
+
+  portlet:
+    image: wcportal
+    shm_size: 1g
+    user: oracle
+    tty: true
+    ports:
+      - "8889:8889"
+      - "17200:17200"
+    links:
+      - database
+      - adminserver
+    depends_on:
+      - adminserver
+    command: /bin/bash -c "/usr/bin/python ~/scripts/main.py --wait --add_servers -o /u01/app/oracle -f /u01/app/oracle/middleware -h /u01/data/mydomain -a adminserver --use_plain ucm && /u01/data/mydomain/bin/startNodeManager.sh; /bin/bash"
