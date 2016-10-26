@@ -26,15 +26,15 @@ ENV PASSWORD welcome1
 
 COPY xe/oracle-xe-11.2.0-1.0.x86_64.rpm.zip /tmp/db/
 
-RUN	yum update -y -q && \
-	yum install -y -q bc binutils gcc git glibc libaio make \
-	net-tools psmisc sysstat unzip && \
+RUN yum update -y -q && \
+    yum install -y -q bc binutils gcc git glibc libaio make \
+    net-tools psmisc sysstat unzip && \
     unzip -qq /tmp/db/oracle-xe-11.2.0-1.0.x86_64.rpm.zip -d /tmp/db && \
     rpm -ivh /tmp/db/Disk1/oracle-xe-11.2.0-1.0.x86_64.rpm && \
     sed -i "s/ORACLE_PASSWORD=<value required>/ORACLE_PASSWORD=${PASSWORD}/g" \
-	/tmp/db/Disk1/response/xe.rsp && \
-	sed -i "s/ORACLE_CONFIRM_PASSWORD=<value required>/ORACLE_CONFIRM_PASSWORD=${PASSWORD}/g" \
-	/tmp/db/Disk1/response/xe.rsp && \
+    /tmp/db/Disk1/response/xe.rsp && \
+    sed -i "s/ORACLE_CONFIRM_PASSWORD=<value required>/ORACLE_CONFIRM_PASSWORD=${PASSWORD}/g" \
+    /tmp/db/Disk1/response/xe.rsp && \
     /etc/init.d/oracle-xe configure responseFile=/tmp/db/Disk1/response/xe.rsp && \
     rm -rf /tmp/db
 
